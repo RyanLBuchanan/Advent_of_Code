@@ -1,7 +1,4 @@
-import pandas as pd
 import requests
-import os
-
 
 def download_input_file(url, session_cookie):
     try:
@@ -21,58 +18,42 @@ def download_input_file(url, session_cookie):
         print(f"An error occurred: {e}")
         return None
 
-def sum_first_and_last_digits(csv_file):
+def sum_first_and_last_digits(lines):
     """
-    Extracts the first and last digits from each line in a CSV file, converts them to integers, and returns their sum.
+    Extracts the first and last digits from each line in a list of strings, converts them to integers, and returns their sum.
 
     Args:
-        csv_file: Path to the CSV file.
+        lines: A list of strings containing lines of text.
 
     Returns:
         The sum of the extracted digit combinations.
     """
     total_sum = 0
-    counter = 0
 
-    # Read the CSV file using pandas
-    with open(csv_file, "r") as file:
-        data = pd.read_csv(file, header=None)
-
-    # Extract first and last digits from each line
-    for line in data.iloc[:, 0]:
+    for line in lines:
+        # Extract first and last digits
         first_digit = line[0]
         last_digit = line[-1]
 
         # Check if both characters are digits
         if first_digit.isdigit() and last_digit.isdigit():
             # Convert digits to integers and add their combination to the total sum
-            individual_sum = int(first_digit) * 10 + int(last_digit)
-            total_sum += individual_sum
-
-            # Print information
-            print(f"Line {counter}: '{line}', Integer: {individual_sum}")
-
-            counter += 1
+            total_sum += int(first_digit) * 10 + int(last_digit)
 
     return total_sum
 
-# Download the input file
+# Download the text
 url_to_scrape = "https://adventofcode.com/2023/day/1/input"
 session_cookie = "53616c7465645f5f7ba92079bad229ee4e0bb4183f1d0d83691aa75bb87ef295c734e88802ce1d48c32f77d29bd4ab3af54a74be9d9cdd74dcf31de2336d2155"
 
 lines_of_text = download_input_file(url_to_scrape, session_cookie)
 
-# Save the downloaded text to a temporary CSV file
+# Check if download was successful
 if lines_of_text:
-    with open("temp.csv", "w") as file:
-        file.write(lines_of_text)
+    # Process the text
+    total_sum = sum_first_and_last_digits(lines_of_text.strip().split(" "))
 
-    # Calculate the sum using the CSV file
-    total_sum = sum_first_and_last_digits("temp.csv")
-
+    # Print the result
     print(f"Total sum: {total_sum}")
-
-    # Delete the temporary CSV file
-    os.remove("temp.csv")
 else:
     print("Failed to download the input file.")
