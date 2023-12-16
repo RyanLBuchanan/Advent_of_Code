@@ -40,11 +40,23 @@ def sum_first_and_last_digits(csv_file):
 
     # Extract first and last digits from each line
     for line in data.iloc[:, 0]:
-        first_digit = line[0]
-        last_digit = line[-1]
+        first_digit = None
+        last_digit = None
 
-        # Check if both characters are digits
-        if first_digit.isdigit() and last_digit.isdigit():
+        # Iterate through the characters in the line to find the first digit
+        for char in line:
+            if char.isdigit():
+                first_digit = char
+                break  # Exit the loop once the first digit is found
+
+        # Iterate through the characters in reverse to find the last digit
+        for char in reversed(line):
+            if char.isdigit():
+                last_digit = char
+                break  # Exit the loop once the last digit is found
+
+        # Check if both first and last digits are found
+        if first_digit is not None and last_digit is not None:
             # Convert digits to integers and add their combination to the total sum
             individual_sum = int(first_digit) * 10 + int(last_digit)
             total_sum += individual_sum
