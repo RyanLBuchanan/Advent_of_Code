@@ -1,8 +1,17 @@
+import os
 import requests
 import csv
 
-def download_input_file(url, session_cookie):
+def download_input_file(url):
     try:
+        # Retrieve the AOC_SESSION environment variable
+        session_cookie = os.environ.get('AOC_SESSION')
+
+        # Check if the session ID is available
+        if session_cookie is None:
+            print("AOC_SESSION environment variable not set. Please set it before running the script.")
+            return None
+
         # Use a session to maintain login state
         with requests.Session() as session:
             cookies = {'session': session_cookie}
@@ -21,20 +30,18 @@ def download_input_file(url, session_cookie):
 
 # Download the input file
 url_to_scrape = "https://adventofcode.com/2023/day/1/input"
-session_cookie = "53616c7465645f5f7ba92079bad229ee4e0bb4183f1d0d83691aa75bb87ef295c734e88802ce1d48c32f77d29bd4ab3af54a74be9d9cdd74dcf31de2336d2155"
-
-lines_of_text = download_input_file(url_to_scrape, session_cookie)
+lines_of_text = download_input_file(url_to_scrape)
 
 # Check if download was successful
 if lines_of_text:
-  # Open a CSV file for writing
-  with open("output.csv", "w") as csvfile:
-    writer = csv.writer(csvfile)
+    # Open a CSV file for writing
+    with open("output.csv", "w") as csvfile:
+        writer = csv.writer(csvfile)
 
-    # Split lines and write to CSV
-    for line in lines_of_text.strip().split(" "):
-      writer.writerow([line])
+        # Split lines and write to CSV
+        for line in lines_of_text.strip().split(" "):
+            writer.writerow([line])
 
-    print("CSV file successfully created!")
+        print("CSV file successfully created!")
 else:
-  print("Failed to download the input file.")
+    print("Failed to download the input file.")

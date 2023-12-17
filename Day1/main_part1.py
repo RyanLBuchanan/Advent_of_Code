@@ -70,7 +70,7 @@ def sum_first_and_last_digits(csv_file):
 
 # Download the input file
 url_to_scrape = "https://adventofcode.com/2023/day/1/input"
-session_cookie = "53616c7465645f5f7ba92079bad229ee4e0bb4183f1d0d83691aa75bb87ef295c734e88802ce1d48c32f77d29bd4ab3af54a74be9d9cdd74dcf31de2336d2155"
+session_cookie = os.environ.get('AOC_SESSION')
 
 lines_of_text = download_input_file(url_to_scrape, session_cookie)
 

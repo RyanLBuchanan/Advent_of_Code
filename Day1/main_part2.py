@@ -1,8 +1,9 @@
 import requests
 from bs4 import BeautifulSoup
+import os
 
 # Set your Advent of Code session ID
-session_id = "53616c7465645f5fc24dfcced561e69cc93a26e453da7dde59effcc921c8cc62c443571412c55b7df1f36d0adf4e58a5d8696ec3e7eb9ddd47c2689dd2fb937c"
+session_id = os.environ.get('AOC_SESSION')
 
 # Function to extract digits from a line, handling both numeric and spelled-out digits
 def extract_digits(line):
